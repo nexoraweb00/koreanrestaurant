@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moonlight Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Serif+KR:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+  
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>달빛사찰</h2>
+        <span>Admin Panel</span>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-target="orders-section">📋 Manage Orders</button>
+                <button class="nav-btn" data-target="reservations-section">📅 Reservations</button>
+        <button class="nav-btn" data-target="menu-section">🍲 Manage Menu</button>
+        <button class="nav-btn" data-target="banner-section">📢 Manage Banners</button>
+        <button class="nav-btn" data-target="gallery-section">📸 Manage Gallery</button>
+      </nav>
+      <a href="#" id="adminLogoutBtn" style="color: #ef4444; margin-top: 20px; display: block; text-decoration: none; font-weight: bold;">🚪 Logout</a>
+      <a href="index.html" class="back-link">← Back to Website</a>
+    </aside>
+
+    <main class="content">
+      <div id="statusMsg"></div>
+
+      <section id="orders-section" class="admin-section active">
+        <h3>Live Orders</h3>
+        <div class="table-box">
+          <table>
+            <thead>
+              <tr><th>Customer Info</th><th>Items</th><th>Address</th><th>Action</th></tr>
+            </thead>
+            <tbody id="ordersBody">
+              <tr><td colspan="5">Loading orders...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="reservations-section" class="admin-section">
+        <h3>Table Reservations</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Date & Time</th>
+                <th>Guests</th>
+                <th>Note / Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reservationsBody">
+              <tr><td colspan="6">Loading reservations...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="menu-section" class="admin-section">
+        <h3>Add / Edit Food</h3>
+        <form id="menuForm" class="admin-form">
+          <input type="hidden" id="editMenuId">
+          <div class="form-row">
+            <div class="input-group"><label>Name (Korean)</label><input type="text" id="foodNameKr" required></div>
+            <div class="input-group"><label>Name (English)</label><input type="text" id="foodNameEn" required></div>
+          </div>
+          <div class="form-row">
+            <div class="input-group"><label>Price (Rs.)</label><input type="number" id="foodPrice" required></div>
+            <div class="input-group">
+              <label>Category</label>
+              <select id="foodCategory" required>
+                <option value="appetizers">Appetizers</option>
+                <option value="mains">Mains</option>
+                <option value="desserts">Desserts</option>
+                <option value="drinks">Tea & Drinks</option>
+              </select>
+            </div>
+          
+          </div>
+          <div class="input-group"><label>Description</label><textarea id="foodDesc" required rows="2"></textarea></div>
+          <div class="input-group">
+           <label>Image (Upload File OR Paste URL)</label>
+           <input type="file" id="foodImgFile" accept="image/*" style="margin-bottom: 5px;">
+           <input type="url" id="foodImgUrl" placeholder="https://... (Optional if uploading)">
+             </div>
+          <button type="submit" class="submit-btn" id="menuSubmitBtn">Add Food Item</button>
+          <button type="button" class="submit-btn cancel-btn" id="cancelEditBtn" style="display:none;">Cancel Edit</button>
+        </form>
+
+        <h3>Current Menu</h3>
+        <div class="table-box">
+          <table>
+            <thead><tr><th>Image</th><th>Name</th><th>Price</th><th>Category</th><th>Actions</th></tr></thead>
+            <tbody id="menuListBody"><tr><td colspan="5">Loading menu...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="banner-section" class="admin-section">
+        <h3>Add Banner</h3>
+        <form id="bannerForm" class="admin-form">
+  <div class="input-group"><label>Banner Title</label><input type="text" id="bannerText" required></div>
+  
+  <div class="input-group">
+    <label>Banner Image (Upload File OR Paste URL)</label>
+    <input type="file" id="bannerImgFile" accept="image/*" style="margin-bottom: 5px;">
+    <input type="url" id="bannerImgUrl" placeholder="https://... (Optional if uploading)">
+  </div>
+
+  <div class="input-group">
+    <label>Select Food Items for this Banner</label>
+    <div id="bannerDishesList" style="max-height: 150px; overflow-y: auto; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.1);">
+    </div>
+  </div>
+  
+<div class="input-group">
+  <label>Discount Percentage (%)</label>
+  <input type="number" id="bannerDiscount" placeholder="e.g. 20 for 20% off" min="0" max="100">
+</div>
+
+  <button type="submit" class="submit-btn">Add Banner</button>
+</form>
+        
+        <h3>Current Banners</h3>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Offered Items</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="bannerListBody">
+      <tr><td colspan="4">Loading banners...</td></tr>
+    </tbody>
+  </table>
+</div>
+      </section>
+
+      <section id="gallery-section" class="admin-section">
+        <h3>Add Gallery Image</h3>
+        <form id="galleryForm" class="admin-form">
+          <div class="form-row">
+            <div class="input-group"><label>Title</label><input type="text" id="galTitle" required></div>
+            <div class="input-group"><label>Subtitle</label><input type="text" id="galSubtitle" required></div>
+          </div>
+          <div class="input-group">
+  <label>Image (Upload File OR Paste URL)</label>
+  <input type="file" id="galImgFile" accept="image/*" style="margin-bottom: 5px;">
+  <input type="url" id="galImgUrl" placeholder="https://... (Optional if uploading)">
+</div>
+          <button type="submit" class="submit-btn">Add Image</button>
+        </form>
+
+        <h3>Current Gallery</h3>
+        <div class="table-box">
+          <table>
+            <thead><tr><th>Image</th><th>Title</th><th>Actions</th></tr></thead>
+            <tbody id="galleryListBody"><tr><td colspan="3">Loading gallery...</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    const firebaseConfig = { 
+        apiKey: "AIzaSyBxjDMZGVPRfx1altzXvwNKnu9sjdfk8kk",
+  authDomain: "korean-cafe-b26a8.firebaseapp.com",
+  projectId: "korean-cafe-b26a8",
+  storageBucket: "korean-cafe-b26a8.firebasestorage.app",
+  messagingSenderId: "823464413100",
+  appId: "1:823464413100:web:444b9b7bdf37826de89c09",
+  measurementId: "G-ZDPWRWL54R"
+     }; 
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const ADMIN_EMAIL = "admin@koreancafe.lk"; 
+
+    onAuthStateChanged(auth, (user) => {
+      
+      if (!user || user.email !== ADMIN_EMAIL) {
+        window.location.href = "admin-login.html"; 
+      }
+    });
+    document.getElementById('adminLogoutBtn')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      auth.signOut().then(() => {
+        window.location.href = "admin-login.html";
+      });
+    });
+  </script>
+
+  <script type="module" src="admin.js"></script>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

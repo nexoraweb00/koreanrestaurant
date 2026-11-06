@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order · Moonlight Temple</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+KR:wght@200;300;400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="order.css">
+</head>
+<body>
+  <body>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <a href="index.html#menu" class="back-btn">← Back to Menu</a>
+
+<div class="custom-modal-overlay" id="customModal">
+  <div class="custom-modal-content">
+    <div class="modal-icon">✨</div>
+    <h3 id="modalTitle">Notice</h3>
+    <p id="modalMessage">Message goes here.</p>
+    <div class="modal-buttons">
+      <button class="modal-btn secondary" onclick="closeCustomModal()">Close</button>
+      <a href="login.html" id="modalLoginBtn" class="modal-btn primary" style="display:none;">Go to Login</a>
+    </div>
+  </div>
+</div>
+<div class="custom-modal-overlay" id="profileModal">
+  <div class="custom-modal-content">
+    <div class="modal-icon">📍</div>
+    <h3>Delivery Details</h3>
+    <p style="margin-bottom: 15px;">Please Enter Your Address & Mobile Number</p>
+    
+    <div style="text-align: left; margin-bottom: 20px;">
+      <label style="font-size: 0.8rem; color: var(--gold);">Mobile Number</label>
+      <input type="tel" id="profilePhone" placeholder="+94 77 123 4567" style="width: 100%; padding: 10px; margin-top: 5px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 5px;">
+      
+      <label style="font-size: 0.8rem; color: var(--gold); margin-top: 15px; display: block;">Delivery Address</label>
+      <textarea id="profileAddress" rows="2" placeholder="Your full address..." style="width: 100%; padding: 10px; margin-top: 5px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 5px;"></textarea>
+    </div>
+    
+    <button class="modal-btn primary" id="saveProfileBtn" style="width: 100%;">Save & Continue Order</button>
+  </div>
+</div>
+
+  <div class="order-container">
+    <div class="order-grid">
+
+      <div class="order-img-box">
+        <img id="dishImg" src="" alt="Dish">
+      </div>
+      
+      <div class="order-info-box">
+        <div class="order-header">
+          <h1 id="dishTitle">Loading...</h1>
+          <div id="dishPrice" class="order-price">Rs. 0</div>
+        </div>
+        
+        <p id="dishDesc" class="order-desc"></p>
+        
+        <div class="order-divider"></div>
+        
+        <div class="qty-section">
+          <span>Quantity</span>
+          <div class="qty-controls">
+            <button id="btnDec">−</button>
+            <input type="number" id="qtyInput" value="1" min="1" readonly>
+            <button id="btnInc">+</button>
+          </div>
+        </div>
+       
+        <div class="rating-section">
+          <span>Rate this dish</span>
+          <div class="stars" id="stars">
+            <span data-val="1">★</span>
+            <span data-val="2">★</span>
+            <span data-val="3">★</span>
+            <span data-val="4">★</span>
+            <span data-val="5">★</span>
+          </div>
+        </div>
+<div class="payment-section" style="margin-bottom: 20px;">
+  <span style="display:block; margin-bottom:10px; font-family: var(--font-serif); letter-spacing:0.1em;">Payment Method</span>
+  <div style="display:flex; flex-direction:column; gap:10px;">
+    <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+      <input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery
+    </label>
+    <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+      <input type="radio" name="payment" value="Card Payment"> Card Payment
+    </label>
+  </div>
+  
+  <div id="cardDetails" style="display:none; margin-top:15px; border:1px dashed rgba(255,255,255,0.2); padding:15px; border-radius:8px;">
+    <input type="text" placeholder="Card Number" style="width:100%; margin-bottom:10px; background:transparent; border:none; border-bottom:1px solid #555; color:white; padding:5px;">
+    <div style="display:flex; gap:10px;">
+      <input type="text" placeholder="MM/YY" style="width:50%; background:transparent; border:none; border-bottom:1px solid #555; color:white; padding:5px;">
+      <input type="text" placeholder="CVV" style="width:50%; background:transparent; border:none; border-bottom:1px solid #555; color:white; padding:5px;">
+    </div>
+  </div>
+</div>
+
+        <button class="order-submit" id="submitOrder">Place Order</button>
+        
+      </div>
+    </div>
+  </div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"; 
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyBxjDMZGVPRfx1altzXvwNKnu9sjdfk8kk",
+  authDomain: "korean-cafe-b26a8.firebaseapp.com",
+  projectId: "korean-cafe-b26a8",
+  storageBucket: "korean-cafe-b26a8.firebasestorage.app",
+  messagingSenderId: "823464413100",
+  appId: "1:823464413100:web:444b9b7bdf37826de89c09",
+  measurementId: "G-ZDPWRWL54R"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  window.firebaseDB = { db, collection, addDoc, serverTimestamp, doc, getDoc, updateDoc };
+
+  onAuthStateChanged(auth, (user) => {
+    window.currentUser = user;
+  });
+</script>
+
+<script src="order.js"></script>
+</body>
+</html>

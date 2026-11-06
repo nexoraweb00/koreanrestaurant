@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>달빛사찰 · Moonlight Temple — Korean Kitchen & Tea House</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+KR:wght@200;300;400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="pl-lantern"></div>
+  <div class="pl-text">달빛사찰</div>
+</div>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="petals" id="petals"></div>
+
+<div id="offerBanner" style="display: none; background: var(--crimson); color: var(--cream); text-align: center; padding: 10px; font-size: 0.9rem; letter-spacing: 0.1em; z-index: 101; position: relative;">
+  <a id="offerBannerLink" href="#" style="color: inherit; text-decoration: none;">
+    <span id="offerBannerText"></span>
+  </a>
+</div>
+
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">
+    달빛사찰 <span class="en">Moonlight</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About <span class="kr">이야기</span></a></li>
+    <li><a href="#menu">Menu <span class="kr">메뉴</span></a></li>
+    <li><a href="#gallery">Gallery <span class="kr">갤러리</span></a></li>
+    <li><a href="#reserve">Reserve <span class="kr">예약</span></a></li>
+
+    <a href="login.html" id="navLoginBtn" class="btn" style="padding: 10px 20px; font-size: 0.7rem; margin-left: 20px;">Login</a>
+   
+  <div class="nav-actions">
+    <a href="notifications.html" id="navNotifBtn" style="display: none; position: relative; text-decoration: none; align-items: center; justify-content: center;">
+      <span style="font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(201,169,97,0.5));">🔔</span>
+      <span id="notifBadge" style="display: none; position: absolute; top: -5px; right: -8px; background: #ef4444; color: white; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 50%; border: 1px solid var(--bg);">0</span>
+    </a>
+  
+    <a href="#" id="navLogoutBtn" class="btn" style="padding: 10px 20px; font-size: 0.7rem; margin-left: 20px; display: none;">Logout</a>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<header class="hero" id="home">
+  <div class="hero-moon"></div>
+  <div class="lantern l1"></div>
+  <div class="lantern l2"></div>
+  <div class="lantern l3"></div>
+  <div class="lantern l4"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Since 2024 · Seoul to Colombo</div>
+    <h1 class="hero-title-kr">달빛사찰</h1>
+    <div class="hero-title-en">Moonlight Temple</div>
+    <p class="hero-desc">
+      A sanctuary of Korean flavours — where temple cuisine,<br>
+      charcoal fire and slow-brewed tea meet beneath a quiet moon.
+    </p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn btn-fill">Explore Menu</a>
+      <a href="#reserve" class="btn">Reserve a Table</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">Scroll</div>
+</header>
+
+<section class="about" id="about">
+  <div class="section-header reveal">
+    <span class="section-label">Our Story</span>
+    <h2 class="section-title">이야기<span class="en">The Legend of Moonlight Temple</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <span class="vertical-label">달빛</span>
+      <span class="vertical-label right">사찰</span>
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="moonGrad" cx="50%" cy="45%" r="55%">
+            <stop offset="0%" stop-color="#f5ead3" stop-opacity="1"/>
+            <stop offset="55%" stop-color="#e8d4a0" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#c9a961" stop-opacity="0.55"/>
+          </radialGradient>
+          <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e8d4a0" stop-opacity="0.28"/>
+            <stop offset="70%" stop-color="#c9a961" stop-opacity="0.04"/>
+            <stop offset="100%" stop-color="#c9a961" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="200" cy="130" r="160" fill="url(#moonHalo)"/>
+        <circle cx="200" cy="130" r="82" fill="url(#moonGrad)"/>
+        <path d="M 0 320 L 0 275 Q 100 240 200 258 Q 300 240 400 275 L 400 320 Z" fill="#08070a"/>
+        <path d="M 20 275 Q 200 195 380 275" stroke="#c9a961" stroke-width="1.2" fill="none" opacity="0.55"/>
+        <path d="M 60 275 Q 200 215 340 275" stroke="#c9a961" stroke-width="0.8" fill="none" opacity="0.3"/>
+        <rect x="90" y="258" width="3" height="30" fill="#08070a"/>
+        <rect x="307" y="258" width="3" height="30" fill="#08070a"/>
+        <circle cx="130" cy="270" r="2.5" fill="#e8d4a0" opacity="0.9"/>
+        <circle cx="200" cy="262" r="3" fill="#e8d4a0" opacity="0.9"/>
+        <circle cx="270" cy="270" r="2.5" fill="#e8d4a0" opacity="0.9"/>
+      </svg>
+    </div>
+
+    <div class="about-text reveal">
+      <h3>달빛 아래, 한국의 정</h3>
+      <div class="sub">— Under the moon, the spirit of Korea —</div>
+      <p>
+        Moonlight Temple (달빛사찰) is born from a simple wish — to carry the quiet,
+        meditative beauty of Korean temple dining into the heart of a modern city.
+        Every bowl, every leaf of tea, every quiet plate arrives from the same
+        discipline that monks have kept for a thousand years: patience, simplicity,
+        and reverence for the ingredient.
+      </p>
+      <p>
+        Our kitchen is fire and stone. Our tea room is silence and steam. The
+        recipes are heirlooms, carried from Seoul's temple kitchens — untouched by
+        hurry, unfaithful to nothing.
+      </p>
+  </div>
+</section>
+
+<section class="banner-section" id="bannerSection" style="display: none; padding: 0; margin-top: 120px;">
+  <div class="banner-slider" id="bannerSlider">
+
+  </div>
+</section>
+
+<section class="menu-section" id="menu">
+  <div class="section-header reveal">
+    <span class="section-label">Menu</span>
+    <h2 class="section-title">메뉴<span class="en">From the Temple Kitchen</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="menu-tabs reveal">
+    <button class="tab-btn active" data-tab="appetizers">Appetizers<span class="kr">전채</span></button>
+    <button class="tab-btn" data-tab="mains">Mains<span class="kr">요리</span></button>
+    <button class="tab-btn" data-tab="desserts">Desserts<span class="kr">디저트</span></button>
+    <button class="tab-btn" data-tab="drinks">Tea & Drinks<span class="kr">음료</span></button>
+  </div>
+
+  <div class="menu-panel active" data-panel="appetizers" id="panel-appetizers"></div>
+  <div class="menu-panel" data-panel="mains" id="panel-mains"></div>
+  <div class="menu-panel" data-panel="desserts" id="panel-desserts"></div>
+  <div class="menu-panel" data-panel="drinks" id="panel-drinks"></div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="section-header reveal">
+    <span class="section-label">Gallery</span>
+    <h2 class="section-title">갤러리<span class="en">Scenes from the Temple</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+<div class="gallery-grid reveal" id="galleryGrid">
+</div>
+   
+</section>
+
+<section class="reserve" id="reserve">
+  <div class="section-header reveal">
+    <span class="section-label">Reservation</span>
+    <h2 class="section-title">예약<span class="en">Reserve Your Evening</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="reserve-wrap">
+    <div class="reserve-info reveal">
+      <h3>달빛 아래에서</h3>
+      <p>
+        Tables are limited — each evening we seat only twelve parties,
+        so that the room stays quiet and the fire stays honest.
+      </p>
+      <div class="reserve-detail">
+        <span class="icon">時</span>
+        <div class="txt">
+          <strong>Hours</strong>
+          Mon - sun 8:00 AM — 11:00 PM
+        </div>
+      </div>
+      <div class="reserve-detail">
+        <span class="icon">寺</span>
+        <div class="txt">
+          <strong>Location</strong>
+          12 Temple Lane, Colombo 07
+        </div>
+      </div>
+      <div class="reserve-detail">
+        <span class="icon">言</span>
+        <div class="txt">
+          <strong>Contact</strong>
+          +94 77 000 0000 · hello@moonlighttemple.lk
+        </div>
+      </div>
+    </div>
+
+        <form class="form reveal" id="reserveForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="resName" placeholder="Your name" required />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="resPhone" placeholder="+94 ..." required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="resDate" required />
+        </div>
+        <div class="form-group">
+          <label>Time</label>
+          <select id="resTime" required>
+            <option value="">Select time</option>
+            <option>8:30 AM</option>
+            <option>9:00 AM</option>
+            <option>9:30 AM</option>
+            <option>10:00 AM</option>
+            <option>10:30 AM</option>
+            <option>11:00 AM</option>
+            <option>11:30 AM</option>
+            <option>12:00 PM</option>
+            <option>12:30 PM</option>
+            <option>1:00 PM</option>
+            <option>1:30 PM</option>
+            <option>2:00 PM</option>
+            <option>2:30 PM</option>
+            <option>3:00 PM</option>
+            <option>3:30 PM</option>
+            <option>4:00 PM</option>
+            <option>4:30 PM</option>
+            <option>5:00 PM</option>
+            <option>5:30 PM</option>
+            <option>6:00 PM</option>
+            <option>6:30 PM</option>
+            <option>7:00 PM</option>
+            <option>7:30 PM</option>
+            <option>8:00 PM</option>
+            <option>8:30 PM</option>
+            <option>9:00 PM</option>
+            <option>9:30 PM</option>
+            <option>10:00 PM</option>
+            <option>10:30 PM</option>
+            <option>11:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Guests</label>
+          <select id="resGuests" required>
+            <option value="">How many</option>
+            <option>2 guests</option>
+            <option>3 guests</option>
+            <option>4 guests</option>
+            <option>5 guests</option>
+            <option>6+ guests</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="resEmail" placeholder="you@example.com" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Note For Why are You Reserving?</label>
+        <textarea id="resNote" rows="2" placeholder="Allergies, occasion, requests..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-fill form-submit">Reserve a Table</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="kr">달빛사찰</div>
+      <div class="en">Moonlight Temple</div>
+      <p>A Korean kitchen & tea house. Flame, stone, and moonlight — served quietly.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Visit</h4>
+      <ul>
+        <li>12 Temple Lane</li>
+        <li>Colombo 07</li>
+        <li>Sri Lanka</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Hours</h4>
+      <ul>
+        <li>Mon – Sun</li>
+        <li>8:00 AM — 11:00 PM</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Moonlight Temple · Crafted with moonlight</p>
+    <div class="socials">
+      <a href="#home">Top ↑</a>
+    </div>
+  </div>
+</footer>
+<div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  
+  import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyBxjDMZGVPRfx1altzXvwNKnu9sjdfk8kk",
+  authDomain: "korean-cafe-b26a8.firebaseapp.com",
+  projectId: "korean-cafe-b26a8",
+  storageBucket: "korean-cafe-b26a8.firebasestorage.app",
+  messagingSenderId: "823464413100",
+  appId: "1:823464413100:web:444b9b7bdf37826de89c09",
+  measurementId: "G-ZDPWRWL54R"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  window.firebaseDB = { db, collection, addDoc, serverTimestamp, getDocs, query, where, onSnapshot, doc, updateDoc };
+
+    onAuthStateChanged(auth, (user) => {
+    window.currentUser = user;
+    
+    const loginBtn = document.getElementById('navLoginBtn');
+    const logoutBtn = document.getElementById('navLogoutBtn');
+    const notifBtn = document.getElementById('navNotifBtn'); 
+
+    if (user) {
+      if(loginBtn) loginBtn.style.display = 'none';
+      if(logoutBtn) logoutBtn.style.display = 'inline-block';
+      if(notifBtn) notifBtn.style.display = 'flex';
+    } else {
+      if(loginBtn) loginBtn.style.display = 'inline-block';
+      if(logoutBtn) logoutBtn.style.display = 'none';
+      if(notifBtn) notifBtn.style.display = 'none'; 
+    }
+  });
+
+  const logoutBtn = document.getElementById('navLogoutBtn');
+  if(logoutBtn) {
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      signOut(auth).then(() => alert("Logged out!"));
+    });
+  }
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

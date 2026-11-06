@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Notifications · Moonlight Temple</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+KR:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: flex; justify-content: center; padding-top: 120px; background: var(--bg); }
+    .notif-container { width: 100%; max-width: 700px; padding: 20px; }
+    .notif-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--line); padding-bottom: 15px; }
+    .notif-header h1 { font-family: var(--font-serif); color: var(--gold-lite); font-size: 2.5rem; margin: 0; }
+    .back-btn { color: var(--gold); text-decoration: none; font-size: 1rem; }
+    
+    .notif-card { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 15px; transition: 0.3s; position: relative; }
+    .notif-card.unread { border-left: 4px solid var(--gold); background: rgba(201,169,97,0.05); }
+    .notif-card p { margin: 0; color: var(--text); font-size: 1rem; line-height: 1.5; }
+    .notif-time { display: block; margin-top: 10px; font-size: 0.75rem; color: var(--text-dim); }
+    .empty-state { text-align: center; color: var(--text-dim); margin-top: 50px; font-style: italic; }
+  </style>
+</head>
+<body>
+  <body>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <div class="notif-container">
+   
+
+  <div class="notif-container">
+    <div class="notif-header">
+      <h1>Notifications</h1>
+      <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+
+    <div id="notifList">
+      <p class="empty-state">Loading notifications...</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    const firebaseConfig = { 
+      apiKey: "AIzaSyBxjDMZGVPRfx1altzXvwNKnu9sjdfk8kk",
+  authDomain: "korean-cafe-b26a8.firebaseapp.com",
+  projectId: "korean-cafe-b26a8",
+  storageBucket: "korean-cafe-b26a8.firebasestorage.app",
+  messagingSenderId: "823464413100",
+  appId: "1:823464413100:web:444b9b7bdf37826de89c09",
+  measurementId: "G-ZDPWRWL54R"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const list = document.getElementById('notifList');
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+      
+        const q = query(collection(db, "notifications"), where("userId", "==", user.uid));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          list.innerHTML = "<p class='empty-state'>No notifications yet.</p>";
+          return;
+        }
+
+        let notifs = [];
+        snapshot.forEach(d => notifs.push({ id: d.id, ...d.data() }));
+
+        notifs.sort((a, b) => {
+           const timeA = a.createdAt?.toMillis() || 0;
+           const timeB = b.createdAt?.toMillis() || 0;
+           return timeB - timeA;
+        });
+
+        list.innerHTML = "";
+
+        for (let n of notifs) {
+          const isUnread = n.isRead === false;
+          const timeString = n.createdAt ? new Date(n.createdAt.toMillis()).toLocaleString() : 'Just now';
+          
+          list.innerHTML += `
+            <div class="notif-card ${isUnread ? 'unread' : ''}">
+              <p>${n.message}</p>
+              <span class="notif-time">${timeString}</span>
+            </div>
+          `;
+
+          if (isUnread) {
+            await updateDoc(doc(db, "notifications", n.id), { isRead: true });
+          }
+        }
+
+      } catch (error) {
+        console.error(error);
+        list.innerHTML = "<p class='empty-state'>Error loading notifications.</p>";
+      }
+    });
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      if(dot) { dot.style.left = mx + 'px'; dot.style.top = my + 'px'; }
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      if(ring) { ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; }
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+  </script>
+</body>
+</html>

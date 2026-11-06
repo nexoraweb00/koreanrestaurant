@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservation Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { background: #08070a; color: #fff; font-family: 'Inter', sans-serif; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .card { background: #0d0b10; border: 1px solid #c9a961; border-radius: 16px; padding: 30px; max-width: 400px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    h1 { color: #e8d4a0; font-family: 'Noto Serif KR', serif; text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(201,169,97,0.3); padding-bottom: 15px; }
+    .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 1rem; }
+    .row:last-child { border-bottom: none; }
+    .label { color: #888; }
+    .value { color: #c9a961; font-weight: 600; text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Reservation Info</h1>
+    <div id="detailsContainer">
+      <p style="text-align:center;">Loading...</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+        apiKey: "AIzaSyBxjDMZGVPRfx1altzXvwNKnu9sjdfk8kk",
+        authDomain: "korean-cafe-b26a8.firebaseapp.com",
+        projectId: "korean-cafe-b26a8",
+        storageBucket: "korean-cafe-b26a8.firebasestorage.app",
+        messagingSenderId: "823464413100",
+        appId: "1:823464413100:web:444b9b7bdf37826de89c09",
+        measurementId: "G-ZDPWRWL54R"
+     };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const resId = urlParams.get('id');
+
+    if(resId) {
+      const docSnap = await getDoc(doc(db, "reservations", resId));
+      
+      if(docSnap.exists()) {
+        const d = docSnap.data();
+        document.getElementById('detailsContainer').innerHTML = `
+          <div class="row"><span class="label">Name</span> <span class="value">${d.name}</span></div>
+          <div class="row"><span class="label">Phone</span> <span class="value">${d.phone}</span></div>
+          <div class="row"><span class="label">Date</span> <span class="value">${d.date}</span></div>
+          <div class="row"><span class="label">Time</span> <span class="value">${d.time}</span></div>
+          <div class="row"><span class="label">Guests</span> <span class="value">${d.guests}</span></div>
+          <div class="row"><span class="label">Email</span> <span class="value">${d.email}</span></div>
+          <div class="row"><span class="label">Note</span> <span class="value" style="max-width: 60%;">${d.note}</span></div>
+        `;
+      } else {
+        document.getElementById('detailsContainer').innerHTML = "<p style='text-align:center; color:red;'>Reservation not found!</p>";
+      }
+    } else {
+      document.getElementById('detailsContainer').innerHTML = "<p style='text-align:center; color:red;'>Invalid QR Code!</p>";
+    }
+  </script>
+</body>
+</html>
