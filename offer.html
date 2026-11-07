@@ -38,19 +38,9 @@
       <p>Exclusive Dishes</p>
     </div>
 
-    <div class="menu-tabs reveal">
-      <button class="tab-btn active" data-tab="appetizers">Appetizers<span class="kr">전채</span></button>
-      <button class="tab-btn" data-tab="mains">Mains<span class="kr">요리</span></button>
-      <button class="tab-btn" data-tab="desserts">Desserts<span class="kr">디저트</span></button>
-      <button class="tab-btn" data-tab="drinks">Tea & Drinks<span class="kr">음료</span></button>
+    <div class="menu-panel active" id="allOfferItems">
+      <p style="color:white; text-align:center; grid-column: 1/-1;">Loading offer items...</p>
     </div>
-
-    <div class="menu-panel active" data-panel="appetizers" id="offer-appetizers"></div>
-    <div class="menu-panel" data-panel="mains" id="offer-mains"></div>
-    <div class="menu-panel" data-panel="desserts" id="offer-desserts"></div>
-    <div class="menu-panel" data-panel="drinks" id="offer-drinks"></div>
-  </div>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -72,15 +62,6 @@
     const urlParams = new URLSearchParams(window.location.search);
     const bannerId = urlParams.get('id');
     const title = document.getElementById('offerTitle');
-
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelector(`.menu-panel[data-panel="${btn.dataset.tab}"]`).classList.add('active');
-      });
-    });
 
     if (bannerId) {
       try {
@@ -115,11 +96,16 @@
                 badgeHTML = `<div class="discount-badge">${discount}% OFF</div>`;
               }
 
-              const targetPanel = document.getElementById(`offer-${dish.category}`);
+                      
+              const container = document.getElementById('allOfferItems');
               
-              if (targetPanel) {
-                
-                targetPanel.innerHTML += `
+              if (container) {
+               
+                if (container.innerHTML.includes("Loading")) {
+                  container.innerHTML = "";
+                }
+
+                container.innerHTML += `
                   <a href="order.html?id=${dishDoc.id}&discount=${discount}" class="menu-card" style="text-decoration: none; color: inherit; display: flex;">
                     <div class="card-img">
                       ${badgeHTML}

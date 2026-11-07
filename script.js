@@ -190,7 +190,11 @@ async function loadBanner() {
     document.getElementById('offerBanner').style.display = 'block';
   }
 }
-setTimeout(loadBanner, 1500);
+document.addEventListener('DOMContentLoaded', ()=>{
+    loadGallery();
+    loadBannersToFrontend();
+    loadBanner();
+});
 
 async function loadGallery() {
   if(!window.firebaseDB) return;
