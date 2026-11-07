@@ -1330,12 +1330,3 @@ footer {
   font-size: 0.6rem !important;
   white-space: nowrap !important;
 }
-
-@media (max-width: 768px) {
-  .nav-links {
-    display: none !important; 
-  }
-  .nav {
-    padding: 15px 15px !important;
-  }
-}

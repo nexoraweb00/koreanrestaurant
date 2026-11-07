@@ -224,7 +224,7 @@ setTimeout(loadGallery, 1500);
 setTimeout(() => {
   if (!window.currentUser || !window.firebaseDB) return;
   
-  const { db } = window.firebaseDB;
+  const { db, collection, query, where, onSnapshot } = window.firebaseDB;
   
   const q = query(
     collection(db, "notifications"), 
@@ -238,7 +238,7 @@ setTimeout(() => {
       
       const toast = document.createElement('div');
       toast.style.cssText = `
-        background: #0d0b10; border: 1px solid var(--gold); border-left: 5px solid var(--gold);
+        background: #792deb; border: 1px solid var(--gold); border-left: 5px solid var(--gold);
         color: var(--cream); padding: 15px 20px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         min-width: 300px; animation: slideIn 0.5s ease forwards; font-family: var(--font-sans);
       `;
