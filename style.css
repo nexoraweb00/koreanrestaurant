@@ -1280,3 +1280,62 @@ footer {
     letter-spacing: 0 !important;
   }
 }
+
+.nav {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 15px 20px !important; 
+  flex-wrap: nowrap !important; 
+}
+
+.nav-logo {
+  font-size: 1.1rem !important; 
+}
+
+.nav-logo .en {
+  font-size: 0.6rem !important;
+  letter-spacing: 0.2em !important;
+}
+
+.nav-links {
+  display: flex !important;
+  gap: 15px !important; 
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.nav-links a {
+  font-size: 0.7rem !important; 
+  letter-spacing: 0.1em !important;
+}
+
+.nav-links a .kr {
+  font-size: 0.55rem !important;
+  margin-left: 2px !important;
+}
+
+.nav-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important; 
+}
+
+#navNotifBtn span {
+  font-size: 1.2rem !important; 
+}
+
+#navLoginBtn, #navLogoutBtn {
+  padding: 8px 12px !important;
+  font-size: 0.6rem !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none !important; 
+  }
+  .nav {
+    padding: 15px 15px !important;
+  }
+}
